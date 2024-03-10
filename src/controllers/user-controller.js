@@ -1,10 +1,11 @@
 const UserService = require('../services/user-service');
 
+
 const userService = new UserService();
 
 const create = async (req ,res) => {
    try {
-        const response = userService.create({
+        const response = await userService.create({
             email : req.body.email,
             password : req.body.password
         });
@@ -15,12 +16,13 @@ const create = async (req ,res) => {
             err: {}
         })
    } catch (error) {
-    console.log(error);
-        return res.status(500).json({
-            message: 'Something went wrong',
+       console.log(error)
+        return res.status(error.statusCode).json({
+            message: error.message,
             data: {},
             success: false,
-            err: error
+            err: error.explanation
+
         });
     
    }
@@ -33,7 +35,7 @@ const create = async (req ,res) => {
                   return res.status(200).json({
                   success : true,
                   data : response,
-                  message : 'successfully fetched a city',
+                  message : 'successfully fetched a mail',
                   err: {}
                   } )
                 
@@ -60,7 +62,7 @@ const create = async (req ,res) => {
             message: 'Successfully signed in'
         });
     } catch (error) {
-        console.log(error);
+        console.log(error)
         return res.status(500).json({
             message: 'Something went wrong',
             data: {},
